@@ -37,7 +37,62 @@ function Cmd-Guid {
     }
 }
 
+function Cmd-Dump { 
+    Param(
+        [Parameter(mandatory=$true)] [String]$f
+    )
+    Format-Hex -Path $f
+}
+
+function Cmd-Hex {
+    Param(
+        [Parameter(mandatory=$true)] [String]$f
+    )
+    $content = Get-Content $f -Encoding Byte
+    ForEach ($b in $content) { 
+        Write-Host -Object ("{0:X2}" -f $b) -NoNewLine
+    }
+}
+
+function Cmd-Dec {
+    Param(
+        [Parameter(mandatory=$true)] [String]$f
+    )
+    $content = Get-Content $f -Encoding Byte
+    ForEach ($b in $content) { 
+        $c = [Convert]::ToString($b,10).PadLeft(3,'0')
+        Write-Host -Object ("{0}" -f $c) -NoNewLine
+    }
+}
+
+function Cmd-Oct {
+    Param(
+        [Parameter(mandatory=$true)] [String]$f
+    )
+    $content = Get-Content $f -Encoding Byte
+    ForEach ($b in $content) {
+        $c = [Convert]::ToString($b,8).PadLeft(3,'0')
+        Write-Host -Object ("{0}" -f $c) -NoNewLine
+    }
+}
+
+function Cmd-Bin {
+    Param(
+        [Parameter(mandatory=$true)] [String]$f
+    )
+    $content = Get-Content $f -Encoding Byte
+    ForEach ($b in $content) {
+        $c = [Convert]::ToString($b,2).PadLeft(8,'0')
+        Write-Host -Object ("{0}" -f $c) -NoNewLine
+    }
+}
+
 Set-Alias head Cmd-Head
 Set-Alias tail Cmd-Tail
 Set-Alias tailf Cmd-Tail-Wait
 Set-Alias guid Cmd-Guid
+Set-Alias dump Cmd-Dump
+Set-Alias hex  Cmd-Hex
+Set-Alias dec  Cmd-Dec
+Set-Alias oct  Cmd-Oct
+Set-Alias bin  Cmd-Bin
