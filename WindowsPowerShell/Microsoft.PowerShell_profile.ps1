@@ -28,11 +28,9 @@ function Cmd-Guid {
        $e = ""
     )
     If ($e -ne 'empty') {
-        New-Guid
-    }
-    Else {
-	Write-Output 'Guid'
-	Write-Output '----'
+        $g = New-Guid 
+        $g -split " "
+    } Else {
         '00000000-0000-0000-0000-000000000000'
     }
 }
@@ -48,7 +46,7 @@ function Cmd-Hex {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) { 
         Write-Host -Object ("{0:X2}" -f $b) -NoNewLine
     }
@@ -58,7 +56,7 @@ function Cmd-Dec {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) { 
         $c = [Convert]::ToString($b,10).PadLeft(3,'0')
         Write-Host -Object ("{0}" -f $c) -NoNewLine
@@ -69,7 +67,7 @@ function Cmd-Oct {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) {
         $c = [Convert]::ToString($b,8).PadLeft(3,'0')
         Write-Host -Object ("{0}" -f $c) -NoNewLine
@@ -80,7 +78,7 @@ function Cmd-Bin {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) {
         $c = [Convert]::ToString($b,2).PadLeft(8,'0')
         Write-Host -Object ("{0}" -f $c) -NoNewLine
@@ -107,7 +105,7 @@ function Split-Bytes {
         [Parameter(mandatory=$false)] [String]$n = "1024"
     )
     $i=0;
-    Get-Content -Path $path -ReadCount ([Convert]::ToInt64($n)) -Encoding Byte | 
+    Get-Content -Path $path -ReadCount ([Convert]::ToInt64($n)) -AsByteStream | 
     ForEach {
         -join [System.Text.Encoding]::ASCII.GetString($_) |
         ForEach { 
