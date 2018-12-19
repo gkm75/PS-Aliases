@@ -87,6 +87,37 @@ function Cmd-Bin {
     }
 }
 
+function Split-Lines {
+    Param(
+        [Parameter(mandatory=$true)] [String]$path,
+        [Parameter(mandatory=$false)] [String]$n = "100"
+    )
+    $i=0;
+    Get-Content -Path $path -ReadCount $n | 
+    ForEach { 
+        $i++; 
+        $c = [Convert]::ToString($i,10).PadLeft(4,'0')
+        $_ | Out-File "out_$c.txt"
+    }
+}
+
+function Split-Bytes {
+    Param(
+        [Parameter(mandatory=$true)] [String]$path,
+        [Parameter(mandatory=$false)] [String]$n = "1024"
+    )
+    $i=0;
+    Get-Content -Path $path -ReadCount ([Convert]::ToInt64($n)) -Encoding Byte | 
+    ForEach {
+        -join [System.Text.Encoding]::ASCII.GetString($_) |
+        ForEach { 
+            $i++; 
+            $c = [Convert]::ToString($i,10).PadLeft(4,'0')
+            $_ | Out-File "out_$c.txt"
+        }
+    }
+}
+
 Set-Alias head Cmd-Head
 Set-Alias tail Cmd-Tail
 Set-Alias tailf Cmd-Tail-Wait
@@ -96,3 +127,5 @@ Set-Alias hex  Cmd-Hex
 Set-Alias dec  Cmd-Dec
 Set-Alias oct  Cmd-Oct
 Set-Alias bin  Cmd-Bin
+Set-Alias split Split-Lines
+Set-Alias splitb Split-Bytes
