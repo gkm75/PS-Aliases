@@ -46,7 +46,7 @@ function Get-Hex {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) { 
         Write-Host -Object ("{0:X2}" -f $b) -NoNewLine
     }
@@ -56,7 +56,7 @@ function Get-Dec {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) { 
         $c = [Convert]::ToString($b,10).PadLeft(3,'0')
         Write-Host -Object ("{0}" -f $c) -NoNewLine
@@ -67,7 +67,7 @@ function Get-Oct {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) {
         $c = [Convert]::ToString($b,8).PadLeft(3,'0')
         Write-Host -Object ("{0}" -f $c) -NoNewLine
@@ -78,7 +78,7 @@ function Get-Bin {
     Param(
         [Parameter(mandatory=$true)] [String]$f
     )
-    $content = Get-Content $f -Encoding Byte
+    $content = Get-Content $f -AsByteStream
     ForEach ($b in $content) {
         $c = [Convert]::ToString($b,2).PadLeft(8,'0')
         Write-Host -Object ("{0}" -f $c) -NoNewLine
@@ -105,7 +105,7 @@ function Split-Bytes {
         [Parameter(mandatory=$false)] [String]$n = "1024"
     )
     $i=0;
-    Get-Content -Path $path -ReadCount ([Convert]::ToInt64($n)) -Encoding Byte | 
+    Get-Content -Path $path -ReadCount ([Convert]::ToInt64($n)) -AsByteStream | 
     ForEach-Object {
         -join [System.Text.Encoding]::ASCII.GetString($_) |
         ForEach-Object { 

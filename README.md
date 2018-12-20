@@ -7,7 +7,14 @@ where as in Linux they can be put into "~/.config/powershell/Microsoft.PowerShel
 
 Note that if powershell is already started, these can be parsed by the command ".$Profile".
 
+There are two scripts in the WindowsPowerShell folder;
+
+* Microsoft.PowerShell_profile.ps1 for *powershell*
+* Microsoft.PowerShell_profile.Core.ps1 for *powershell core*
+
 ## Aliases
+
+This is a list of aliases available in the script files
 
 ### head
 
